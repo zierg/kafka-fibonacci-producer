@@ -26,18 +26,18 @@ public class FibonacciProducerTest {
     @Test
     public void test() throws IOException, TimeoutException {
         new FibonacciProducer(embeddedKafka.getBrokersAsString(), EXPECTED_AMOUNT).send();
-        List<Integer> result = collectValues();
+        List<Long> result = collectValues();
         assertThat(result).containsExactly(EXCEPTED);
     }
-    private List<Integer> collectValues() {
+    private List<Long> collectValues() {
         Map<String, Object> consumerProps = getConsumerProperties();
-        KafkaConsumer<String, Integer> consumer = new KafkaConsumer<>(consumerProps);
+        KafkaConsumer<String, Long> consumer = new KafkaConsumer<>(consumerProps);
         consumer.subscribe(Collections.singletonList(TOPIC));
 
-        List<Integer> values = new ArrayList<>();
+        List<Long> values = new ArrayList<>();
         long before = System.currentTimeMillis();
         while (System.currentTimeMillis() - before < TIME_LIMIT && values.size() < EXPECTED_AMOUNT) {
-            ConsumerRecords<String, Integer> records = consumer.poll(100);
+            ConsumerRecords<String, Long> records = consumer.poll(100);
             for (val record : records) {
                 values.add(record.value());
             }
@@ -49,12 +49,12 @@ public class FibonacciProducerTest {
         Map<String, Object> consumerProps =
                 KafkaTestUtils.consumerProps("fibonacciConsumer", "false", embeddedKafka);
         consumerProps.put("auto.offset.reset", "earliest");
-        consumerProps.put("value.deserializer", "org.apache.kafka.common.serialization.IntegerDeserializer");
+        consumerProps.put("value.deserializer", "org.apache.kafka.common.serialization.LongDeserializer");
         return consumerProps;
     }
 
 
-    static final Integer[] EXCEPTED = {1, 1, 2, 3, 5, 8, 13, 21, 34, 55};
+    static final Long[] EXCEPTED = {1L, 1L, 2L, 3L, 5L, 8L, 13L, 21L, 34L, 55L};
     static final int EXPECTED_AMOUNT = EXCEPTED.length;
     static final int TIME_LIMIT = 5000;
     static final String TOPIC = "fibonacci";

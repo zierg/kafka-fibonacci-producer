@@ -20,13 +20,13 @@ public class FibonacciProducer {
 
     public void send() {
         log.info("Start sending fibonacci numbers. Amount: {}", amount);
-        Producer<String, Integer> producer = new KafkaProducer<>(props);
-        int previous1 = 0;
-        int previous2 = 1;
+        Producer<String, Long> producer = new KafkaProducer<>(props);
+        long previous1 = 0;
+        long previous2 = 1;
         for(int i = 0; i < amount; i++) {
             log.info("Sending the {}-th number: {}", i, previous2);
             producer.send(new ProducerRecord<>(TOPIC, previous2));
-            int newNumber = previous1 + previous2;
+            long newNumber = previous1 + previous2;
             previous1 = previous2;
             previous2 = newNumber;
         }
@@ -43,7 +43,7 @@ public class FibonacciProducer {
         props.put("linger.ms", 1);
         props.put("buffer.memory", 33554432);
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        props.put("value.serializer", "org.apache.kafka.common.serialization.IntegerSerializer");
+        props.put("value.serializer", "org.apache.kafka.common.serialization.LongSerializer");
         return props;
     }
 

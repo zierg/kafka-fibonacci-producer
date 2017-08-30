@@ -19,10 +19,12 @@ public class FibonacciProducer {
     }
 
     public void send() {
+        log.info("Start sending fibonacci numbers. Amount: {}", amount);
         Producer<String, Integer> producer = new KafkaProducer<>(props);
         int previous1 = 0;
         int previous2 = 1;
         for(int i = 0; i < amount; i++) {
+            log.info("Sending the {}-th number: {}", i, previous2);
             producer.send(new ProducerRecord<>(TOPIC, previous2));
             int newNumber = previous1 + previous2;
             previous1 = previous2;

@@ -56,7 +56,7 @@ public class FibonacciProducerTest {
 
     static final Long[] EXCEPTED = {1L, 1L, 2L, 3L, 5L, 8L, 13L, 21L, 34L, 55L};
     static final int EXPECTED_AMOUNT = EXCEPTED.length;
-    static final int TIME_LIMIT = 5000;
+    static final int TIME_LIMIT = 10000;
     static final String TOPIC = "fibonacci";
 
     @ClassRule

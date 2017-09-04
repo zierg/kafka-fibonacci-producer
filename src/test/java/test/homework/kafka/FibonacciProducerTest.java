@@ -20,7 +20,7 @@ import java.util.concurrent.TimeoutException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FibonacciProducerTest {
 
     @Test
@@ -53,12 +53,11 @@ public class FibonacciProducerTest {
         return consumerProps;
     }
 
-
-    static final Long[] EXCEPTED = {1L, 1L, 2L, 3L, 5L, 8L, 13L, 21L, 34L, 55L};
-    static final int EXPECTED_AMOUNT = EXCEPTED.length;
-    static final int TIME_LIMIT = 10000;
-    static final String TOPIC = "fibonacci";
+    static Long[] EXCEPTED = {1L, 1L, 2L, 3L, 5L, 8L, 13L, 21L, 34L, 55L};
+    static int EXPECTED_AMOUNT = EXCEPTED.length;
+    static int TIME_LIMIT = 10000;
+    static String TOPIC = "fibonacci";
 
     @ClassRule
-    public static final KafkaEmbedded embeddedKafka = new KafkaEmbedded(2, true, 1, TOPIC);
+    public static KafkaEmbedded embeddedKafka = new KafkaEmbedded(2, true, 1, TOPIC);
 }
